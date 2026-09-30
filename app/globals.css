@@ -1,0 +1,250 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design Tokens ────────────────────────────────────────────────── */
+
+:root {
+  --background: 210 25% 97%;
+  --foreground: 215 32% 13%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 32% 13%;
+  --muted: 210 20% 94%;
+  --muted-foreground: 215 14% 40%;
+  --border: 214 20% 87%;
+  --input: 214 20% 87%;
+  --ring: 199 82% 30%;
+  --primary: 199 82% 26%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 38 92% 46%;
+  --accent-foreground: 30 60% 12%;
+  --destructive: 0 72% 47%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 158 64% 32%;
+  --radius: 0.625rem;
+
+  --header-bg: 0 0% 100% / 0.85;
+  --input-container-bg: 210 25% 97% / 0.9;
+  --input-box-bg: 0 0% 100%;
+  --bubble-ai-bg: 0 0% 100%;
+  --bubble-ai-text: 215 32% 13%;
+  --source-card-bg: 210 25% 98%;
+  --source-btn-bg: 210 20% 94%;
+  --source-btn-hover: 210 20% 90%;
+}
+
+.dark {
+  --background: 216 30% 8%;
+  --foreground: 210 20% 92%;
+  --card: 216 26% 11%;
+  --card-foreground: 210 20% 92%;
+  --muted: 216 20% 16%;
+  --muted-foreground: 214 14% 64%;
+  --border: 216 20% 19%;
+  --input: 216 20% 19%;
+  --ring: 190 75% 48%;
+  --primary: 190 75% 48%;
+  --primary-foreground: 216 30% 8%;
+  --accent: 40 90% 60%;
+  --accent-foreground: 216 30% 8%;
+  --destructive: 0 80% 62%;
+  --destructive-foreground: 216 30% 8%;
+  --success: 158 60% 45%;
+
+  --header-bg: 216 30% 8% / 0.85;
+  --input-container-bg: 216 30% 8% / 0.9;
+  --input-box-bg: 216 26% 12%;
+  --bubble-ai-bg: 216 26% 11%;
+  --bubble-ai-text: 210 20% 90%;
+  --source-card-bg: 216 24% 13%;
+  --source-btn-bg: 216 20% 15%;
+  --source-btn-hover: 216 20% 19%;
+}
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+::selection {
+  background-color: hsl(var(--primary) / 0.3);
+}
+
+/* ── Scrollbar Styling ────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* ── Chat Animations ─────────────────────────────────────────────── */
+
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.15);
+  }
+  50% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+}
+
+@keyframes typing-dot {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-message-in {
+  animation: message-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.15) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* ── Typing indicator ─────────────────────────────────────────────── */
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: hsl(var(--primary));
+  animation: typing-dot 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ── Source card hover effects ────────────────────────────────────── */
+
+.source-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.source-card-hover:hover {
+  background-color: hsl(var(--muted) / 0.8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--foreground) / 0.08);
+}
+
+/* ── Chat input focus glow ────────────────────────────────────────── */
+
+.chat-input-glow:focus-within {
+  box-shadow: 0 0 0 1px hsl(var(--primary) / 0.4),
+              0 0 16px hsl(var(--primary) / 0.15);
+}
+
+/* ── Gradient text ────────────────────────────────────────────────── */
+
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary)),
+    hsl(var(--accent))
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
