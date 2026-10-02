@@ -1,23 +1,40 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+"use client";
 
-import { getCorpus, uploadPdf } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 
-/** Daftar dokumen di basis pengetahuan. `enabled` agar hanya dimuat saat panel dibuka. */
-export function useCorpus(enabled: boolean) {
+import { getCorpus } from "@/lib/api";
+import { queryKeys } from "@/lib/query-keys";
+import type { CorpusItem, CorpusStats } from "@/types/rag";
+
+/** Daftar dokumen di basis pengetahuan. Selalu aktif. */
+export function useCorpus() {
   return useQuery({
-    queryKey: ["corpus"],
+    queryKey: queryKeys.corpus,
     queryFn: getCorpus,
-    enabled,
-    staleTime: 60_000,
+    staleTime: 5 * 60_000,
   });
 }
 
-/** Upload PDF, lalu otomatis menyegarkan daftar corpus. */
-export function useUploadPdf() {
-  const queryClient = useQueryClient();
+/** Ambil satu dokumen dari cache corpus berdasarkan id. Tidak ada request kedua. */
+export function useCorpusItem(id: string) {
+  return useQuery({
+    queryKey: queryKeys.corpus,
+    queryFn: getCorpus,
+    staleTime: 5 * 60_000,
+    select: (items: CorpusItem[]) => items.find((i) => i.id === id),
+  });
+}
 
-  return useMutation<unknown, Error, File>({
-    mutationFn: uploadPdf,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["corpus"] }),
+/** Statistik corpus: jumlah dokumen, regulasi, dan kategori. */
+export function useCorpusStats() {
+  return useQuery({
+    queryKey: queryKeys.corpus,
+    queryFn: getCorpus,
+    staleTime: 5 * 60_000,
+    select: (items: CorpusItem[]): CorpusStats => ({
+      totalDocuments: items.length,
+      totalRegulations: new Set(items.map((i) => i.regulation)).size,
+      totalCategories: new Set(items.filter((i) => i.category).map((i) => i.category)).size,
+    }),
   });
 }

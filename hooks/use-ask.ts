@@ -1,3 +1,5 @@
+"use client";
+
 import { useMutation } from "@tanstack/react-query";
 
 import { askQuestion } from "@/lib/api";
@@ -9,6 +11,8 @@ import type { AskRequest, AskResponse } from "@/types/rag";
  */
 export function useAsk() {
   return useMutation<AskResponse, Error, AskRequest>({
-    mutationFn: askQuestion,
+    mutationKey: ["ask"],
+    mutationFn: (payload) => askQuestion(payload),
+    retry: 0,
   });
 }

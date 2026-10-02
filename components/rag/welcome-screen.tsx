@@ -1,46 +1,35 @@
 "use client";
 
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
-
-const PROMPTS = [
-  { topic: "Permodalan", text: "Berapa rasio RBC minimum yang wajib dipenuhi?" },
-  { topic: "Perhitungan", text: "Apa itu NDM dan bagaimana cara perhitungannya?" },
-  { topic: "Struktur peraturan", text: "Apa isi Bagian Kesatu BAB II POJK 6/2022?" },
-  { topic: "Pelaporan", text: "Jelaskan kewajiban pelaporan perusahaan asuransi ke OJK" },
-];
+import * as React from "react";
+import { ShieldCheck } from "lucide-react";
 
 interface WelcomeScreenProps {
-  onExampleClick: (question: string) => void;
+  onExampleClick?: (question: string) => void;
 }
 
 export function WelcomeScreen({ onExampleClick }: WelcomeScreenProps) {
-  return (
-    <div className="mx-auto flex min-h-full max-w-3xl flex-col justify-center px-4 py-10">
-      <div className="animate-fade-in space-y-8">
-        <div className="space-y-3">
-          <h2 className="max-w-xl text-2xl font-semibold leading-snug tracking-tight text-foreground sm:text-3xl">
-            Tanya regulasi asuransi, jawaban disertai rujukan pasal.
-          </h2>
-          <p className="max-w-lg text-[15px] leading-relaxed text-muted-foreground">
-            Setiap jawaban disusun dari dokumen resmi POJK. Buka kutipan di
-            bawah jawaban untuk mencocokkannya dengan sumber aslinya.
-          </p>
-        </div>
+  const [greeting, setGreeting] = React.useState("Selamat datang");
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          {PROMPTS.map(({ topic, text }) => (
-            <button
-              key={text}
-              onClick={() => onExampleClick(text)}
-              className="group flex flex-col gap-1.5 rounded-xl border border-border bg-card p-4 text-left transition-colors hover:border-primary/50 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <span className="flex items-center justify-between text-xs font-medium text-primary">
-                {topic}
-                <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
-              </span>
-              <span className="text-sm leading-relaxed text-foreground">{text}</span>
-            </button>
-          ))}
+
+  React.useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) setGreeting("Selamat pagi");
+    else if (hour >= 12 && hour < 15) setGreeting("Selamat siang");
+    else if (hour >= 15 && hour < 18) setGreeting("Selamat sore");
+    else setGreeting("Selamat malam");
+  }, []);
+
+  return (
+    <div className="mx-auto flex min-h-[calc(100dvh-13rem)] max-w-2xl flex-col items-center justify-center px-4 py-8 text-center select-none">
+      <div className="animate-fade-in flex flex-col items-center space-y-4">
+        {/* Clean Greeting Headline & Subtitle */}
+        <div className="space-y-2 max-w-lg">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            {greeting}, apa yang ingin Anda tanyakan?
+          </h2>
+          <p className="text-sm sm:text-[15px] leading-relaxed text-muted-foreground">
+            Konsultasikan regulasi POJK, rasio keuangan, atau kepatuhan perasuransian. Jawaban disusun langsung dengan rujukan dokumen resmi OJK.
+          </p>
         </div>
       </div>
     </div>
